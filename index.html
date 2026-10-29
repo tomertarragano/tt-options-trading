@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TT Options Trading</title>
+    <style>
+      :root {
+        --ink: #12313a;
+        --muted: #5b7078;
+        --line: #d5dfe2;
+        --bg: #f3f6f7;
+        --accent: #0b5d68;
+        --danger: #a8321f;
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 40px 20px 64px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      section {
+        margin-top: 40px;
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid var(--ink);
+        font-size: 1.15rem;
+      }
+
+      input,
+      textarea,
+      button {
+        font: inherit;
+        color: inherit;
+      }
+
+      input:not([type="checkbox"]),
+      textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      button {
+        cursor: pointer;
+        padding: 6px 14px;
+        border: 1px solid var(--accent);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--accent);
+      }
+
+      button.primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      button.danger {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+
+      #add-form {
+        display: grid;
+        gap: 8px;
+      }
+
+      #add-form button {
+        justify-self: start;
+      }
+
+      #todo-list {
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+      }
+
+      .todo {
+        margin-bottom: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .todo-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+      }
+
+      .todo-row input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        accent-color: var(--accent);
+      }
+
+      .todo-title {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--ink);
+        text-align: left;
+      }
+
+      .todo-title::after {
+        content: "▸";
+        color: var(--muted);
+      }
+
+      .todo-title[aria-expanded="true"]::after {
+        content: "▾";
+      }
+
+      .done .todo-title {
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+
+      .todo-details {
+        display: grid;
+        gap: 8px;
+        padding: 0 12px 12px 40px;
+      }
+
+      .notes {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+
+      .muted,
+      .hint {
+        color: var(--muted);
+      }
+
+      .hint {
+        font-size: 0.875rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .links {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .links li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .links a {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .links span {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>TT Options Trading</h1>
+        <p>To-do list and key links.</p>
+      </header>
+
+      <section>
+        <h2>To-do list</h2>
+        <form id="add-form">
+          <input id="new-title" type="text" placeholder="Add a to-do" aria-label="To-do" />
+          <textarea id="new-notes" rows="2" placeholder="Notes (optional)" aria-label="Notes"></textarea>
+          <button class="primary" type="submit">Add</button>
+        </form>
+        <p id="empty" class="muted">Nothing on the list yet.</p>
+        <ul id="todo-list"></ul>
+        <p class="hint">Click a to-do to see notes, edit, or delete it. The list is saved in this browser only.</p>
+      </section>
+
+      <section>
+        <h2>Links</h2>
+        <ul class="links">
+          <li><a href="https://www.marketwatch.com/" target="_blank" rel="noopener">MarketWatch</a> <span>— market news and headlines</span></li>
+          <li><a href="https://www.tradingview.com/" target="_blank" rel="noopener">TradingView</a> <span>— charts</span></li>
+          <li><a href="https://www.tradingview.com/symbols/SPX/" target="_blank" rel="noopener">S&amp;P 500 (SPX)</a> <span>— on TradingView</span></li>
+          <li><a href="https://www.tradingview.com/symbols/TVC-RUT/" target="_blank" rel="noopener">Russell 2000 (RUT)</a> <span>— on TradingView</span></li>
+          <li><a href="https://volchart.io/" target="_blank" rel="noopener">Volchart</a> <span>— volatility charts</span></li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "tt-options-trading-todos";
+
+      let todos = load();
+      let openId = null;
+      let editingId = null;
+
+      function load() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          return Array.isArray(saved) ? saved : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+      }
+
+      function el(tag, props = {}, children = []) {
+        const node = document.createElement(tag);
+        Object.assign(node, props);
+        node.append(...children);
+        return node;
+      }
+
+      function render() {
+        document.getElementById("todo-list").replaceChildren(...todos.map(renderTodo));
+        document.getElementById("empty").hidden = todos.length > 0;
+      }
+
+      function renderTodo(todo) {
+        const isOpen = openId === todo.id;
+
+        const checkbox = el("input", {
+          type: "checkbox",
+          checked: todo.done,
+          onchange: () => {
+            todo.done = checkbox.checked;
+            save();
+            render();
+          },
+        });
+        checkbox.setAttribute("aria-label", `Mark "${todo.title}" done`);
+
+        const title = el("button", {
+          type: "button",
+          className: "todo-title",
+          textContent: todo.title,
+          onclick: () => {
+            openId = isOpen ? null : todo.id;
+            editingId = null;
+            render();
+          },
+        });
+        title.setAttribute("aria-expanded", String(isOpen));
+
+        const item = el("li", { className: todo.done ? "todo done" : "todo" }, [
+          el("div", { className: "todo-row" }, [checkbox, title]),
+        ]);
+
+        if (isOpen) {
+          item.append(editingId === todo.id ? renderEditor(todo) : renderDetails(todo));
+        }
+        return item;
+      }
+
+      function renderDetails(todo) {
+        return el("div", { className: "todo-details" }, [
+          el("p", {
+            className: todo.notes ? "notes" : "notes muted",
+            textContent: todo.notes || "No notes.",
+          }),
+          el("div", { className: "actions" }, [
+            el("button", {
+              type: "button",
+              textContent: "Edit",
+              onclick: () => {
+                editingId = todo.id;
+                render();
+              },
+            }),
+            el("button", {
+              type: "button",
+              className: "danger",
+              textContent: "Delete",
+              onclick: () => {
+                if (!confirm(`Delete "${todo.title}"?`)) return;
+                todos = todos.filter((t) => t.id !== todo.id);
+                save();
+                render();
+              },
+            }),
+          ]),
+        ]);
+      }
+
+      function renderEditor(todo) {
+        const titleInput = el("input", { type: "text", value: todo.title });
+        titleInput.setAttribute("aria-label", "To-do");
+        const notesInput = el("textarea", { value: todo.notes, rows: 3 });
+        notesInput.setAttribute("aria-label", "Notes");
+
+        return el(
+          "form",
+          {
+            className: "todo-details",
+            onsubmit: (event) => {
+              event.preventDefault();
+              const newTitle = titleInput.value.trim();
+              if (!newTitle) return;
+              todo.title = newTitle;
+              todo.notes = notesInput.value.trim();
+              editingId = null;
+              save();
+              render();
+            },
+          },
+          [
+            titleInput,
+            notesInput,
+            el("div", { className: "actions" }, [
+              el("button", { type: "submit", className: "primary", textContent: "Save" }),
+              el("button", {
+                type: "button",
+                textContent: "Cancel",
+                onclick: () => {
+                  editingId = null;
+                  render();
+                },
+              }),
+            ]),
+          ],
+        );
+      }
+
+      document.getElementById("add-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const titleInput = document.getElementById("new-title");
+        const notesInput = document.getElementById("new-notes");
+        const title = titleInput.value.trim();
+        if (!title) return;
+
+        todos.push({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          title,
+          notes: notesInput.value.trim(),
+          done: false,
+        });
+        titleInput.value = "";
+        notesInput.value = "";
+        save();
+        render();
+        titleInput.focus();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
