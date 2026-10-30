@@ -4,15 +4,40 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TT Options Trading</title>
+    <script>
+      // Runs before first paint so a dark-mode page never flashes white.
+      (function () {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("tt-options-trading-theme");
+        } catch {}
+        const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script>
     <style>
       :root {
         --ink: #12313a;
         --muted: #5b7078;
         --line: #d5dfe2;
         --bg: #f3f6f7;
+        --surface: #fff;
         --accent: #0b5d68;
+        --on-accent: #fff;
         --danger: #a8321f;
         color-scheme: light;
+      }
+
+      :root[data-theme="dark"] {
+        --ink: #e2ecee;
+        --muted: #9db1b7;
+        --line: #2b3d42;
+        --bg: #0f1a1d;
+        --surface: #172428;
+        --accent: #4fb3bf;
+        --on-accent: #08262b;
+        --danger: #ef7a63;
+        color-scheme: dark;
       }
 
       * {
@@ -30,6 +55,18 @@
         max-width: 680px;
         margin: 0 auto;
         padding: 40px 20px 64px;
+      }
+
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      #theme-toggle {
+        flex-shrink: 0;
+        white-space: nowrap;
       }
 
       h1 {
@@ -67,7 +104,7 @@
         padding: 8px 10px;
         border: 1px solid var(--line);
         border-radius: 6px;
-        background: #fff;
+        background: var(--surface);
       }
 
       button {
@@ -75,13 +112,13 @@
         padding: 6px 14px;
         border: 1px solid var(--accent);
         border-radius: 6px;
-        background: #fff;
+        background: var(--surface);
         color: var(--accent);
       }
 
       button.primary {
         background: var(--accent);
-        color: #fff;
+        color: var(--on-accent);
       }
 
       button.danger {
@@ -108,7 +145,7 @@
         margin-bottom: 8px;
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: #fff;
+        background: var(--surface);
       }
 
       .todo-row {
@@ -200,8 +237,11 @@
   <body>
     <main>
       <header>
-        <h1>TT Options Trading</h1>
-        <p>To-do list and key links.</p>
+        <div>
+          <h1>TT Options Trading</h1>
+          <p>To-do list and key links.</p>
+        </div>
+        <button id="theme-toggle" type="button">Dark mode</button>
       </header>
 
       <section>
@@ -385,6 +425,26 @@
         titleInput.focus();
       });
 
+      const THEME_KEY = "tt-options-trading-theme";
+      const themeToggle = document.getElementById("theme-toggle");
+      const systemDark = matchMedia("(prefers-color-scheme: dark)");
+
+      function applyTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        themeToggle.textContent = theme === "dark" ? "☀ Light mode" : "☾ Dark mode";
+      }
+
+      themeToggle.addEventListener("click", () => {
+        const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+
+      systemDark.addEventListener("change", (event) => {
+        if (!localStorage.getItem(THEME_KEY)) applyTheme(event.matches ? "dark" : "light");
+      });
+
+      applyTheme(document.documentElement.dataset.theme);
       render();
     </script>
   </body>
